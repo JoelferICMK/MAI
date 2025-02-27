@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Diabetes Detection AI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #2170b3;
+        }
+        h1 {
+            text-align: center;
+        }
+        .greeting {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        .input-section {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #2170b3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1a5a90;
+        }
+        button.secondary {
+            background-color: #6c757d;
+        }
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+        button.add-btn {
+            background-color: #28a745;
+            padding: 8px 16px;
+        }
+        button.add-btn:hover {
+            background-color: #218838;
+        }
+        input, select {
+            padding: 10px;
+            width: 150px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            margin: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .normal {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .prediabetes {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .type1, .type2 {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .info-section {
+            margin-top: 30px;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .reading-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .reading-list {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .unit-selector {
+            margin: 20px 0;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+        .progress-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .step {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #f2f2f2;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin: 0 10px;
+        }
+        .step.active {
+            background-color: #2170b3;
+            color: white;
+        }
+        .step-line {
+            display: inline-block;
+            width: 50px;
+            height: 2px;
+            background-color: #f2f2f2;
+            vertical-align: middle;
+        }
+        .step-line.active {
+            background-color: #2170b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diabetes Detection AI</h1>
+        
+        <div class="progress-container">
+            <div class="step active" id="step1">1</div>
+            <div class="step-line" id="line1"></div>
+            <div class="step" id="step2">2</div>
+            <div class="step-line" id="line2"></div>
+            <div class="step" id="step3">3</div>
+        </div>
+        
+        <div class="greeting" id="greeting">
+            <p>Magandang araw! Maligayang pagdating sa aming Comprehensive Diabetes Detection AI.</p>
+            <p>Ang tool na ito ay makakatulong upang masuri ang posibilidad ng diabetes base sa iyong blood glucose readings sa loob ng isang linggo.</p>
+            <button id="startBtn">Simulan</button>
+        </div>
+        
+        <div class="unit-selector hidden" id="unitSection">
+            <h2>Piliin ang Unit ng Measurement</h2>
+            <p>Anong unit ang ginagamit ng iyong glucometer?</p>
+            <button id="mgdlBtn">mg/dL</button>
+            <button id="mmolBtn">mmol/L</button>
+        </div>
+        
+        <div class="input-section hidden" id="inputSection">
+            <h2>I-record ang Iyong Glucose Readings</h2>
+            <p>Pakilagay ang iyong mga blood glucose readings sa nakalipas na linggo.</p>
+            <p>Maaaring maglagay ng kahit ilang readings, pero mas accurate ang resulta kung mayroon kang at least 7 readings.</p>
+            
+            <div class="reading-list" id="readingList">
+                <table id="readingsTable">
+                    <thead>
+                        <tr>
+                            <th>Araw</th>
+                            <th>Oras</th>
+                            <th>Reading (<span id="unitLabel">mg/dL</span>)</th>
+                            <th>Kalagayan</th>
+                            <th>Aksyon</th>
+                        </tr>
+                    </thead>
+                    <tbody id="readingsTableBody">
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="reading-row">
+                <select id="dayInput">
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miyerkules">Miyerkules</option>
+                    <option value="Huwebes">Huwebes</option>
+                    <option value="Biyernes">Biyernes</option>
+                    <option value="Sabado">Sabado</option>
+                    <option value="Linggo">Linggo</option>
+                </select>
+                <select id="timeInput">
+                    <option value="Fasting">Fasting (pagkagising)</option>
+                    <option value="Before Breakfast">Bago mag-almusal</option>
+                    <option value="After Breakfast">Pagkatapos mag-almusal</option>
+                    <option value="Before Lunch">Bago mag-tanghalian</option>
+                    <option value="After Lunch">Pagkatapos mag-tanghalian</option>
+                    <option value="Before Dinner">Bago mag-hapunan</option>
+                    <option value="After Dinner">Pagkatapos mag-hapunan</option>
+                    <option value="Before Bedtime">Bago matulog</option>
+                    <option value="Random">Random</option>
+                </select>
+                <input type="number" id="glucoseInput" min="0" max="1000" placeholder="Glucose Level">
+                <button class="add-btn" id="addReadingBtn">+ Idagdag</button>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="analyzeBtn" disabled>Suriin ang Data</button>
+            </div>
+        </div>
+        
+        <div class="result hidden" id="resultSection">
+            <h2>Resulta ng Pagsusuri</h2>
+            <div id="resultText"></div>
+            <div class="info-section" id="infoSection"></div>
+            <div id="chartContainer" style="height: 300px; width: 100%; margin-top: 20px;"></div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="resetBtn">Subukan Muli</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Init variables
+            const startBtn = document.getElementById('startBtn');
+            const mgdlBtn = document.getElementById('mgdlBtn');
+            const mmolBtn = document.getElementById('mmolBtn');
+            const addReadingBtn = document.getElementById('addReadingBtn');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const greeting = document.getElementById('greeting');
+            const unitSection = document.getElementById('unitSection');
+            const inputSection = document.getElementById('inputSection');
+            const resultSection = document.getElementById('resultSection');
+            const resultText = document.getElementById('resultText');
+            const infoSection = document.getElementById('infoSection');
+            const glucoseInput = document.getElementById('glucoseInput');
+            const dayInput = document.getElementById('dayInput');
+            const timeInput = document.getElementById('timeInput');
+            const readingsTableBody = document.getElementById('readingsTableBody');
+            const unitLabel = document.getElementById('unitLabel');
+            
+            let selectedUnit = 'mg/dL';
+            let readings = [];
+            
+            // Progress steps
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            const line1 = document.getElementById('line1');
+            const line2 = document.getElementById('line2');
+            
+            startBtn.addEventListener('click', function() {
+                greeting.classList.add('hidden');
+                unitSection.classList.remove('hidden');
+                step2.classList.add('active');
+                line1.classList.add('active');
+            });
+            
+            mgdlBtn.addEventListener('click', function() {
+                selectedUnit = 'mg/dL';
+                unitLabel.textContent = 'mg/dL';
+                unitSection.classList.add('hidden');
+                inputSection.classList.remove('hidden');
+                step3.classList.add('active');
+                line2.classList.add('active');
+            });
+            
+            mmolBtn.addEventListener('click', function() {
+                selectedUnit = 'mmol/L';
+                unitLabel.textContent = 'mmol/L';
+                unitSection.classList.add('hidden');
+                inputSection.classList.remove('hidden');
+                step3.classList.add('active');
+                line2.classList.add('active');
+            });
+            
+            addReadingBtn.addEventListener('click', function() {
+                const glucoseLevel = parseFloat(glucoseInput.value);
+                const day = dayInput.value;
+                const time = timeInput.value;
+                
+                if (isNaN(glucoseLevel) || glucoseLevel <= 0) {
+                    alert('Pakiusap maglagay ng tamang numero para sa glucose level.');
+                    return;
+                }
+                
+                // Add reading to array
+                readings.push({
+                    day: day,
+                    time: time,
+                    level: glucoseLevel,
+                    unit: selectedUnit
+                });
+                
+                // Display in table
+                updateReadingsTable();
+                
+                // Clear input fields
+                glucoseInput.value = '';
+                
+                // Enable analyze button if we have at least one reading
+                if (readings.length > 0) {
+                    analyzeBtn.disabled = false;
+                }
+            });
+            
+            analyzeBtn.addEventListener('click', function() {
+                const result = analyzeGlucoseLevels(readings);
+                
+                resultText.innerHTML = result.message;
+                resultSection.className = `result ${result.class}`;
+                infoSection.innerHTML = result.info;
+                
+                inputSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                // Reset all data
+                readings = [];
+                glucoseInput.value = '';
+                updateReadingsTable();
+                analyzeBtn.disabled = true;
+                
+                // Reset UI
+                resultSection.classList.add('hidden');
+                greeting.classList.remove('hidden');
+                
+                // Reset progress steps
+                step2.classList.remove('active');
+                step3.classList.remove('active');
+                line1.classList.remove('active');
+                line2.classList.remove('active');
+            });
+            
+            function updateReadingsTable() {
+                // Clear table first
+                readingsTableBody.innerHTML = '';
+                
+                // Add all readings to the table
+                readings.forEach((reading, index) => {
+                    const row = document.createElement('tr');
+                    
+                    const dayCell = document.createElement('td');
+                    dayCell.textContent = reading.day;
+                    row.appendChild(dayCell);
+                    
+                    const timeCell = document.createElement('td');
+                    timeCell.textContent = reading.time;
+                    row.appendChild(timeCell);
+                    
+                    const levelCell = document.createElement('td');
+                    levelCell.textContent = reading.level + ' ' + reading.unit;
+                    row.appendChild(levelCell);
+                    
+                    const statusCell = document.createElement('td');
+                    statusCell.textContent = getStatusForReading(reading);
+                    row.appendChild(statusCell);
+                    
+                    const actionCell = document.createElement('td');
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = 'Alisin';
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.onclick = function() {
+                        readings.splice(index, 1);
+                        updateReadingsTable();
+                        if (readings.length === 0) {
+                            analyzeBtn.disabled = true;
+                        }
+                    };
+                    actionCell.appendChild(removeBtn);
+                    row.appendChild(actionCell);
+                    
+                    readingsTableBody.appendChild(row);
+                });
+            }
+            
+            function getStatusForReading(reading) {
+                let level = reading.level;
+                
+                // Convert mmol/L to mg/dL for consistent evaluation
+                if (reading.unit === 'mmol/L') {
+                    level = level * 18;  // convert to mg/dL
+                }
+                
+                if (reading.time === 'Fasting' || reading.time === 'Before Breakfast') {
+                    if (level < 100) return 'Normal';
+                    if (level >= 100 && level <= 125) return 'Prediabetes';
+                    return 'Mataas';
+                } else {
+                    if (level < 140) return 'Normal';
+                    if (level >= 140 && level <= 199) return 'Prediabetes';
+                    return 'Mataas';
+                }
+            }
+            
+            function analyzeGlucoseLevels(readings) {
+                let result = {
+                    message: '',
+                    class: '',
+                    info: ''
+                };
+                
+                // Convert all readings to mg/dL for consistent analysis
+                const standardizedReadings = readings.map(reading => {
+                    let level = reading.level;
+                    if (reading.unit === 'mmol/L') {
+                        level = level * 18;  // Convert mmol/L to mg/dL
+                    }
+                    return {
+                        ...reading,
+                        standardizedLevel: level
+                    };
+                });
+                
+                // Count abnormal readings
+                const fastingReadings = standardizedReadings.filter(r => 
+                    r.time === 'Fasting' || r.time === 'Before Breakfast');
+                
+                const otherReadings = standardizedReadings.filter(r => 
+                    r.time !== 'Fasting' && r.time !== 'Before Breakfast');
+                
+                const highFastingCount = fastingReadings.filter(r => r.standardizedLevel >= 126).length;
+                const highRandomCount = otherReadings.filter(r => r.standardizedLevel >= 200).length;
+                const prediabetesFastingCount = fastingReadings.filter(r => 
+                    r.standardizedLevel >= 100 && r.standardizedLevel <= 125).length;
+                const prediabetesRandomCount = otherReadings.filter(r => 
+                    r.standardizedLevel >= 140 && r.standardizedLevel <= 199).length;
+                
+                // Calculate average levels
+                const averageFasting = fastingReadings.length > 0 ? 
+                    fastingReadings.reduce((sum, r) => sum + r.standardizedLevel, 0) / fastingReadings.length : 0;
+                
+                const averageOverall = standardizedReadings.length > 0 ? 
+                    standardizedReadings.reduce((sum, r) => sum + r.standardizedLevel, 0) / standardizedReadings.length : 0;
+                
+                // Check for patterns indicative of different types of diabetes
+                
+                // Normal: Most readings normal
+                if (highFastingCount === 0 && highRandomCount === 0 && 
+                    prediabetesFastingCount <= fastingReadings.length * 0.2 && 
+                    prediabetesRandomCount <= otherReadings.length * 0.2) {
+                    
+                    result.message = '<h3>Normal na Glucose Levels</h3>';
+                    result.message += '<p>Base sa iyong mga glucose readings, ang iyong mga antas ng asukal sa dugo ay nasa normal na saklaw.</p>';
+                    result.class = 'normal';
+                    result.info = '<p>Ang normal na fasting glucose level ay mas mababa sa 100 mg/dL (5.6 mmol/L). ' +
+                                 'Ang normal na random glucose level ay mas mababa sa 140 mg/dL (7.8 mmol/L).</p>' +
+                                 '<p>Ipagpatuloy ang malusog na pamumuhay, balanced diet, at regular na physical activity ' +
+                                 'upang mapanatili ang malusog na antas ng asukal sa dugo.</p>';
+                }
+                // Prediabetes: Moderate elevation, but not yet at diabetes level
+                else if ((prediabetesFastingCount > fastingReadings.length * 0.5 || 
+                         prediabetesRandomCount > otherReadings.length * 0.5) && 
+                         highFastingCount <= fastingReadings.length * 0.2 && 
+                         highRandomCount <= otherReadings.length * 0.2) {
+                    
+                    result.message = '<h3>Posibleng Prediabetes</h3>';
+                    result.message += '<p>Base sa iyong mga glucose readings, mayroon kang mga antas ng glucose na tumataas, na posibleng nagpapahiwatig ng prediabetes.</p>';
+                    result.class = 'prediabetes';
+                    result.info = '<p>Ang prediabetes ay isang kondisyon kung saan ang mga antas ng asukal sa dugo ay mas mataas kaysa normal ngunit ' +
+                                 'hindi pa sapat na mataas upang ma-diagnose bilang diabetes. Fasting glucose levels na 100-125 mg/dL (5.6-6.9 mmol/L) o ' +
+                                 'random glucose levels na 140-199 mg/dL (7.8-11.0 mmol/L) ay karaniwang nagpapahiwatig ng prediabetes.</p>' +
+                                 '<p>Ang prediabetes ay maaaring mapigilan mula sa pag-unlad sa Type 2 diabetes sa pamamagitan ng mga pagbabago sa lifestyle tulad ng ' +
+                                 'pagbawas ng timbang, regular na exercise, at balanced diet.</p>' +
+                                 '<p>Inirerekomenda na kumunsulta sa healthcare professional para sa kumpirmadong diagnosis at personalized na advice.</p>';
+                }
+                // Type 2 Diabetes patterns
+                else if (highFastingCount > 0 || highRandomCount > 0) {
+                    // Type 1 vs Type 2 determination
+                    // High variability and very high spikes can suggest Type 1
+                    const stdDeviation = calculateStandardDeviation(standardizedReadings.map(r => r.standardizedLevel));
+                    const maxReading = Math.max(...standardizedReadings.map(r => r.standardizedLevel));
+                    
+                    // If there's high variability and very high readings, suggest Type 1
+                    if (stdDeviation > 60 && maxReading > 300) {
+                        result.message = '<h3>Posibleng Type 1 Diabetes</h3>';
+                        result.message += '<p>Base sa iyong mga glucose readings, ang iyong mga antas ng asukal sa dugo ay mataas at may malaking pagkakaiba-iba, ' +
+                                         'na maaaring nagpapahiwatig ng Type 1 diabetes.</p>';
+                        result.class = 'type1';
+                        result.info = '<p>Ang Type 1 diabetes ay isang autoimmune condition kung saan ang katawan ay hindi gumagawa ng insulin. ' +
+                                     'Ito ay karaniwang nagsisimula sa kamusmusan o sa pagkabata, pero maaari ring mangyari sa anumang edad.</p>' +
+                                     '<p>Ang mga features na nagmumungkahi ng Type 1 diabetes ay: mabilis na pag-onset ng mga sintomas, ' +
+                                     'malaking pagkakaiba-iba sa mga glucose levels, at mataas na mga spike sa glucose.</p>' +
+                                     '<p><strong>Medikal na Atensyon:</strong> Kung pinaghihinalaan ang Type 1 diabetes, ' +
+                                     'kinakailangan ang agarang medikal na atensyon dahil maaaring magdulot ito ng mga seryosong komplikasyon kung hindi gamutin.</p>';
+                    } 
+                    // Otherwise, suggest Type 2
+                    else {
+                        result.message = '<h3>Posibleng Type 2 Diabetes</h3>';
+                        result.message += '<p>Base sa iyong mga glucose readings, ang iyong mga antas ng asukal sa dugo ay patuloy na mataas, ' +
+                                         'na maaaring nagpapahiwatig ng Type 2 diabetes.</p>';
+                        result.class = 'type2';
+                        result.info = '<p>Ang Type 2 diabetes ay isang chronic condition na nakakaapekto sa paraan ng pag-process ng katawan ng asukal sa dugo. ' +
+                                     'Sa Type 2 diabetes, ang katawan ay either lumalaban sa epekto ng insulin o hindi gumagawa ng sapat na insulin upang ' +
+                                     'mapanatili ang normal na mga antas ng glucose.</p>' +
+                                     '<p>Ang Type 2 diabetes ay karaniwang nagde-develop sa paglipas ng panahon at kadalasang nauugnay sa ' +
+                                     'pagkakaroon ng sobrang timbang, kakulangan ng physical activity, at genetic factors.</p>' +
+                                     '<p>Ang management ng Type 2 diabetes ay maaaring kasangkutan ng healthy diet, regular na exercise, pagbabawas ng timbang, ' +
+                                     'monitoring ng blood glucose, at sa ilang mga kaso, oral medications o insulin therapy.</p>';
+                    }
+                    
+                    result.info += '<p><strong>Mahalagang Paalala:</strong> Ang diabetes ay isang seryosong medikal na kondisyon na nangangailangan ng propesyonal na ' +
+                                  'diagnosis at management. Ang data analysis na ito ay batay lamang sa iyong mga self-reported glucose readings at hindi ' +
+                                  'kapalit ng isang propesyonal na medikal na diagnosis. Mangyaring kumonsulta sa healthcare provider para sa ' +
+                                  'kumpirmadong diagnosis at personalized na treatment plan.</p>';
+                }
+                
+                // Add statistics
+                result.info += '<h3>Buod ng Iyong Glucose Readings:</h3>';
+                result.info += '<ul>';
+                if (fastingReadings.length > 0) {
+                    result.info += `<li>Average fasting glucose: ${averageFasting.toFixed(1)} mg/dL</li>`;
+                }
+                result.info += `<li>Average overall glucose: ${averageOverall.toFixed(1)} mg/dL</li>`;
+                result.info += `<li>Kabuuang bilang ng mga reading: ${readings.length}</li>`;
+                result.info += '</ul>';
+                
+                // Add general disclaimer
+                result.info += '<p><strong>Disclaimer:</strong> Ang tool na ito ay para sa educational purposes lamang at hindi kapalit ng propesyonal na medikal na payo. ' +
+                              'Palaging kumunsulta sa isang healthcare professional para sa tamang diagnosis at paggamot.</p>';
+                
+                return result;
+            }
+            
+            function calculateStandardDeviation(values) {
+                const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
+                const squareDiffs = values.map(value => {
+                    const diff = value - avg;
+                    return diff * diff;
+                });
+                const avgSquareDiff = squareDiffs.reduce((sum, val) => sum + val, 0) / squareDiffs.length;
+                return Math.sqrt(avgSquareDiff);
+            }
+        });
+    </script>
+</body>
+</html>
