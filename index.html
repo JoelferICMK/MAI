@@ -162,6 +162,80 @@
         .step-line.active {
             background-color: #2170b3;
         }
+        .risk-factors {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .risk-factors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        .demographic-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .risk-score {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+        .risk-factors-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .risk-factors-title button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            border-bottom: 1px dotted #666;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -174,12 +248,114 @@
             <div class="step" id="step2">2</div>
             <div class="step-line" id="line2"></div>
             <div class="step" id="step3">3</div>
+            <div class="step-line" id="line3"></div>
+            <div class="step" id="step4">4</div>
         </div>
         
         <div class="greeting" id="greeting">
             <p>Magandang araw! Maligayang pagdating sa aming Comprehensive Diabetes Detection AI.</p>
-            <p>Ang tool na ito ay makakatulong upang masuri ang posibilidad ng diabetes base sa iyong blood glucose readings sa loob ng isang linggo.</p>
+            <p>Ang tool na ito ay makakatulong upang masuri ang posibilidad ng diabetes base sa iyong blood glucose readings at iba pang risk factors.</p>
             <button id="startBtn">Simulan</button>
+        </div>
+        
+        <div class="demographic-section hidden" id="demographicSection">
+            <h2>Personal na Impormasyon</h2>
+            <p>Pakiusap ilagay ang iyong personal na impormasyon para sa mas tumpak na pagsusuri.</p>
+            
+            <div class="demographic-info">
+                <div class="form-group">
+                    <label for="ageInput">Edad:</label>
+                    <input type="number" id="ageInput" min="1" max="120" placeholder="Hal: 45">
+                </div>
+                
+                <div class="form-group">
+                    <label for="genderInput">Kasarian:</label>
+                    <select id="genderInput">
+                        <option value="">-- Pumili --</option>
+                        <option value="male">Lalaki</option>
+                        <option value="female">Babae</option>
+                        <option value="other">Iba pa</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="heightInput">Taas (cm):</label>
+                    <input type="number" id="heightInput" min="50" max="250" placeholder="Hal: 165">
+                </div>
+                
+                <div class="form-group">
+                    <label for="weightInput">Timbang (kg):</label>
+                    <input type="number" id="weightInput" min="20" max="300" placeholder="Hal: 70">
+                </div>
+            </div>
+            
+            <div class="risk-factors">
+                <div class="risk-factors-title">
+                    <h3>Risk Factors</h3>
+                    <button id="selectAllBtn" class="secondary">Piliin Lahat</button>
+                </div>
+                <p>Lagyan ng check ang anumang naaangkop sa iyo:</p>
+                
+                <div class="risk-factors-grid">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="familyHistory" name="riskFactor" value="familyHistory">
+                        <label for="familyHistory">May kamag-anak na may diabetes</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="hypertension" name="riskFactor" value="hypertension">
+                        <label for="hypertension">May high blood pressure</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="physicalInactivity" name="riskFactor" value="physicalInactivity">
+                        <label for="physicalInactivity">Hindi regular na nag-eexercise</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="gestational" name="riskFactor" value="gestational">
+                        <label for="gestational">Nagkaroon ng gestational diabetes</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="pcos" name="riskFactor" value="pcos">
+                        <label for="pcos">May PCOS (Polycystic Ovary Syndrome)</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="cholesterol" name="riskFactor" value="cholesterol">
+                        <label for="cholesterol">May mataas na cholesterol</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="heartDisease" name="riskFactor" value="heartDisease">
+                        <label for="heartDisease">May heart disease</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="prediabetesHistory" name="riskFactor" value="prediabetesHistory">
+                        <label for="prediabetesHistory">Dating na-diagnose na prediabetes</label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="ethnicRisk" name="riskFactor" value="ethnicRisk">
+                        <label for="ethnicRisk">Kabilang sa high-risk ethnic group <span class="tooltip">ⓘ<span class="tooltiptext">Asian, Pacific Islander, African, Hispanic/Latino, at Indigenous/native</span></span></label>
+                    </div>
+                    
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="sleep" name="riskFactor" value="sleep">
+                        <label for="sleep">May sleep problems (apnea)</label>
+                    </div>
+                </div>
+                
+                <div class="risk-score hidden" id="riskScoreDisplay">
+                    Risk Score: <span id="riskScoreValue">0</span>/10
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="demographicNextBtn">Susunod</button>
+            </div>
         </div>
         
         <div class="unit-selector hidden" id="unitSection">
@@ -244,6 +420,7 @@
             <h2>Resulta ng Pagsusuri</h2>
             <div id="resultText"></div>
             <div class="info-section" id="infoSection"></div>
+            <div id="riskFactorSummary"></div>
             <div id="chartContainer" style="height: 300px; width: 100%; margin-top: 20px;"></div>
             <div style="text-align: center; margin-top: 20px;">
                 <button id="resetBtn">Subukan Muli</button>
@@ -260,33 +437,129 @@
             const addReadingBtn = document.getElementById('addReadingBtn');
             const analyzeBtn = document.getElementById('analyzeBtn');
             const resetBtn = document.getElementById('resetBtn');
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            const demographicNextBtn = document.getElementById('demographicNextBtn');
+            
             const greeting = document.getElementById('greeting');
+            const demographicSection = document.getElementById('demographicSection');
             const unitSection = document.getElementById('unitSection');
             const inputSection = document.getElementById('inputSection');
             const resultSection = document.getElementById('resultSection');
             const resultText = document.getElementById('resultText');
             const infoSection = document.getElementById('infoSection');
+            const riskFactorSummary = document.getElementById('riskFactorSummary');
             const glucoseInput = document.getElementById('glucoseInput');
             const dayInput = document.getElementById('dayInput');
             const timeInput = document.getElementById('timeInput');
             const readingsTableBody = document.getElementById('readingsTableBody');
             const unitLabel = document.getElementById('unitLabel');
+            const riskScoreDisplay = document.getElementById('riskScoreDisplay');
+            const riskScoreValue = document.getElementById('riskScoreValue');
             
             let selectedUnit = 'mg/dL';
             let readings = [];
+            let riskFactors = [];
+            let userProfile = {
+                age: 0,
+                gender: '',
+                height: 0,
+                weight: 0,
+                bmi: 0
+            };
             
             // Progress steps
             const step1 = document.getElementById('step1');
             const step2 = document.getElementById('step2');
             const step3 = document.getElementById('step3');
+            const step4 = document.getElementById('step4');
             const line1 = document.getElementById('line1');
             const line2 = document.getElementById('line2');
+            const line3 = document.getElementById('line3');
             
             startBtn.addEventListener('click', function() {
                 greeting.classList.add('hidden');
-                unitSection.classList.remove('hidden');
+                demographicSection.classList.remove('hidden');
                 step2.classList.add('active');
                 line1.classList.add('active');
+            });
+            
+            // Handle risk factor selection
+            document.querySelectorAll('input[name="riskFactor"]').forEach(checkbox => {
+                checkbox.addEventListener('change', updateRiskScore);
+            });
+            
+            // Select all risk factors button
+            selectAllBtn.addEventListener('click', function() {
+                const checkboxes = document.querySelectorAll('input[name="riskFactor"]');
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = !allChecked;
+                });
+                
+                updateRiskScore();
+            });
+            
+            // Update risk score whenever a checkbox is changed
+            function updateRiskScore() {
+                const checkedFactors = document.querySelectorAll('input[name="riskFactor"]:checked');
+                riskFactors = Array.from(checkedFactors).map(cb => cb.value);
+                
+                // Calculate risk score
+                let score = riskFactors.length;
+                
+                // Adjust score based on number of factors (max 10)
+                score = Math.min(score, 10);
+                
+                riskScoreValue.textContent = score;
+                riskScoreDisplay.classList.remove('hidden');
+            }
+            
+            demographicNextBtn.addEventListener('click', function() {
+                // Collect demographic info
+                const age = parseInt(document.getElementById('ageInput').value);
+                const gender = document.getElementById('genderInput').value;
+                const height = parseFloat(document.getElementById('heightInput').value);
+                const weight = parseFloat(document.getElementById('weightInput').value);
+                
+                // Validate required fields
+                if (isNaN(age) || age <= 0 || age > 120) {
+                    alert('Pakiusap maglagay ng tamang edad (1-120).');
+                    return;
+                }
+                
+                if (gender === '') {
+                    alert('Pakiusap pumili ng kasarian.');
+                    return;
+                }
+                
+                // BMI calculation if height and weight are provided
+                let bmi = 0;
+                if (!isNaN(height) && !isNaN(weight) && height > 0 && weight > 0) {
+                    bmi = weight / ((height/100) * (height/100));
+                }
+                
+                // Save user profile
+                userProfile = {
+                    age: age,
+                    gender: gender,
+                    height: height || 0,
+                    weight: weight || 0,
+                    bmi: bmi
+                };
+                
+                // If BMI is high, automatically add it as a risk factor
+                if (bmi >= 25) {
+                    if (!riskFactors.includes('obesity')) {
+                        riskFactors.push('obesity');
+                    }
+                }
+                
+                // Move to next section
+                demographicSection.classList.add('hidden');
+                unitSection.classList.remove('hidden');
+                step3.classList.add('active');
+                line2.classList.add('active');
             });
             
             mgdlBtn.addEventListener('click', function() {
@@ -294,8 +567,8 @@
                 unitLabel.textContent = 'mg/dL';
                 unitSection.classList.add('hidden');
                 inputSection.classList.remove('hidden');
-                step3.classList.add('active');
-                line2.classList.add('active');
+                step4.classList.add('active');
+                line3.classList.add('active');
             });
             
             mmolBtn.addEventListener('click', function() {
@@ -303,8 +576,8 @@
                 unitLabel.textContent = 'mmol/L';
                 unitSection.classList.add('hidden');
                 inputSection.classList.remove('hidden');
-                step3.classList.add('active');
-                line2.classList.add('active');
+                step4.classList.add('active');
+                line3.classList.add('active');
             });
             
             addReadingBtn.addEventListener('click', function() {
@@ -338,11 +611,40 @@
             });
             
             analyzeBtn.addEventListener('click', function() {
-                const result = analyzeGlucoseLevels(readings);
+                const result = analyzeGlucoseLevels(readings, userProfile, riskFactors);
                 
                 resultText.innerHTML = result.message;
                 resultSection.className = `result ${result.class}`;
                 infoSection.innerHTML = result.info;
+                
+                // Display risk factor summary
+                if (riskFactors.length > 0) {
+                    let riskFactorHTML = '<h3>Iyong Risk Factors:</h3><ul>';
+                    
+                    // Map risk factor values to readable text
+                    const riskFactorLabels = {
+                        familyHistory: 'May kamag-anak na may diabetes',
+                        hypertension: 'May high blood pressure',
+                        physicalInactivity: 'Hindi regular na nag-eexercise',
+                        gestational: 'Nagkaroon ng gestational diabetes',
+                        pcos: 'May PCOS (Polycystic Ovary Syndrome)',
+                        cholesterol: 'May mataas na cholesterol',
+                        heartDisease: 'May heart disease',
+                        prediabetesHistory: 'Dating na-diagnose na prediabetes',
+                        ethnicRisk: 'Kabilang sa high-risk ethnic group',
+                        sleep: 'May sleep problems (apnea)',
+                        obesity: 'BMI >= 25 (overwight o obese)'
+                    };
+                    
+                    riskFactors.forEach(factor => {
+                        riskFactorHTML += `<li>${riskFactorLabels[factor] || factor}</li>`;
+                    });
+                    
+                    riskFactorHTML += '</ul>';
+                    riskFactorSummary.innerHTML = riskFactorHTML;
+                } else {
+                    riskFactorSummary.innerHTML = '';
+                }
                 
                 inputSection.classList.add('hidden');
                 resultSection.classList.remove('hidden');
@@ -351,19 +653,39 @@
             resetBtn.addEventListener('click', function() {
                 // Reset all data
                 readings = [];
+                riskFactors = [];
+                userProfile = {
+                    age: 0,
+                    gender: '',
+                    height: 0,
+                    weight: 0,
+                    bmi: 0
+                };
+                
+                // Clear form fields
+                document.getElementById('ageInput').value = '';
+                document.getElementById('genderInput').value = '';
+                document.getElementById('heightInput').value = '';
+                document.getElementById('weightInput').value = '';
+                document.querySelectorAll('input[name="riskFactor"]').forEach(cb => cb.checked = false);
                 glucoseInput.value = '';
-                updateReadingsTable();
-                analyzeBtn.disabled = true;
                 
                 // Reset UI
+                updateReadingsTable();
+                analyzeBtn.disabled = true;
+                riskScoreDisplay.classList.add('hidden');
+                
+                // Reset progress and display first screen
                 resultSection.classList.add('hidden');
                 greeting.classList.remove('hidden');
                 
                 // Reset progress steps
                 step2.classList.remove('active');
                 step3.classList.remove('active');
+                step4.classList.remove('active');
                 line1.classList.remove('active');
                 line2.classList.remove('active');
+                line3.classList.remove('active');
             });
             
             function updateReadingsTable() {
@@ -427,7 +749,7 @@
                 }
             }
             
-            function analyzeGlucoseLevels(readings) {
+            function analyzeGlucoseLevels(readings, userProfile, riskFactors) {
                 let result = {
                     message: '',
                     class: '',
@@ -467,51 +789,130 @@
                 const averageOverall = standardizedReadings.length > 0 ? 
                     standardizedReadings.reduce((sum, r) => sum + r.standardizedLevel, 0) / standardizedReadings.length : 0;
                 
+                // Calculate risk score based on demographic info and risk factors
+                let diabetesRiskScore = calculateDiabetesRiskScore(userProfile, riskFactors);
+                
+                // Add demographic summary
+                let demographicSummary = '';
+                if (userProfile.age > 0) {
+                    demographicSummary += `<p><strong>Edad:</strong> ${userProfile.age}</p>`;
+                    
+                    if (userProfile.height > 0 && userProfile.weight > 0) {
+                        demographicSummary += `<p><strong>BMI:</strong> ${userProfile.bmi.toFixed(1)} `;
+                        
+                        if (userProfile.bmi < 18.5) {
+                            demographicSummary += '(Underweight)';
+                        } else if (userProfile.bmi < 25) {
+                            demographicSummary += '(Normal)';
+                        } else if (userProfile.bmi < 30) {
+                            demographicSummary += '(Overweight)';
+                        } else {
+                            demographicSummary += '(Obese)';
+                        }
+                        
+                        demographicSummary += '</p>';
+                    }
+                }
+                
                 // Check for patterns indicative of different types of diabetes
                 
-                // Normal: Most readings normal
+                // Normal: Most readings normal and low risk score
                 if (highFastingCount === 0 && highRandomCount === 0 && 
                     prediabetesFastingCount <= fastingReadings.length * 0.2 && 
-                    prediabetesRandomCount <= otherReadings.length * 0.2) {
+                    prediabetesRandomCount <= otherReadings.length * 0.2 &&
+                    diabetesRiskScore < 5) {
                     
                     result.message = '<h3>Normal na Glucose Levels</h3>';
-                    result.message += '<p>Base sa iyong mga glucose readings, ang iyong mga antas ng asukal sa dugo ay nasa normal na saklaw.</p>';
+                    result.message += '<p>Base sa iyong mga glucose readings at risk factors, ang iyong mga antas ng asukal sa dugo ay nasa normal na saklaw.</p>';
                     result.class = 'normal';
-                    result.info = '<p>Ang normal na fasting glucose level ay mas mababa sa 100 mg/dL (5.6 mmol/L). ' +
+                    result.info = demographicSummary;
+                    result.info += '<p>Ang normal na fasting glucose level ay mas mababa sa 100 mg/dL (5.6 mmol/L). ' +
                                  'Ang normal na random glucose level ay mas mababa sa 140 mg/dL (7.8 mmol/L).</p>' +
                                  '<p>Ipagpatuloy ang malusog na pamumuhay, balanced diet, at regular na physical activity ' +
                                  'upang mapanatili ang malusog na antas ng asukal sa dugo.</p>';
+                    
+                    if (diabetesRiskScore >= 3) {
+                        result.info += '<p><strong>Babala:</strong> Kahit normal ang iyong glucose readings, mayroon kang ilang risk factors para sa diabetes. Inirerekomenda na magkaroon ng regular na check-up at pagsusubaybay ng glucose levels.</p>';
+                    }
                 }
-                // Prediabetes: Moderate elevation, but not yet at diabetes level
-                else if ((prediabetesFastingCount > fastingReadings.length * 0.5 || 
+                // Prediabetes: Moderate elevation or higher risk score
+                else if (((prediabetesFastingCount > fastingReadings.length * 0.5 || 
                          prediabetesRandomCount > otherReadings.length * 0.5) && 
                          highFastingCount <= fastingReadings.length * 0.2 && 
-                         highRandomCount <= otherReadings.length * 0.2) {
+                         highRandomCount <= otherReadings.length * 0.2) ||
+                         (diabetesRiskScore >= 5 && diabetesRiskScore < 8 && 
+                          highFastingCount === 0 && highRandomCount === 0)) {
                     
                     result.message = '<h3>Posibleng Prediabetes</h3>';
-                    result.message += '<p>Base sa iyong mga glucose readings, mayroon kang mga antas ng glucose na tumataas, na posibleng nagpapahiwatig ng prediabetes.</p>';
+                    result.message += '<p>Base sa iyong mga glucose readings at risk factors, mayroon kang mga antas ng glucose na tumataas, na posibleng nagpapahiwatig ng prediabetes.</p>';
                     result.class = 'prediabetes';
-                    result.info = '<p>Ang prediabetes ay isang kondisyon kung saan ang mga antas ng asukal sa dugo ay mas mataas kaysa normal ngunit ' +
+                    result.info = demographicSummary;
+                    result.info += '<p>Ang prediabetes ay isang kondisyon kung saan ang mga antas ng asukal sa dugo ay mas mataas kaysa normal ngunit ' +
                                  'hindi pa sapat na mataas upang ma-diagnose bilang diabetes. Fasting glucose levels na 100-125 mg/dL (5.6-6.9 mmol/L) o ' +
                                  'random glucose levels na 140-199 mg/dL (7.8-11.0 mmol/L) ay karaniwang nagpapahiwatig ng prediabetes.</p>' +
                                  '<p>Ang prediabetes ay maaaring mapigilan mula sa pag-unlad sa Type 2 diabetes sa pamamagitan ng mga pagbabago sa lifestyle tulad ng ' +
                                  'pagbawas ng timbang, regular na exercise, at balanced diet.</p>' +
                                  '<p>Inirerekomenda na kumunsulta sa healthcare professional para sa kumpirmadong diagnosis at personalized na advice.</p>';
                 }
-                // Type 2 Diabetes patterns
-                else if (highFastingCount > 0 || highRandomCount > 0) {
+                // Type 1 or Type 2 Diabetes patterns
+                else if (highFastingCount > 0 || highRandomCount > 0 || diabetesRiskScore >= 8) {
                     // Type 1 vs Type 2 determination
+                    // Various factors to consider:
+                    
+                    let type1Indicators = 0;
+                    let type2Indicators = 0;
+                    
                     // High variability and very high spikes can suggest Type 1
                     const stdDeviation = calculateStandardDeviation(standardizedReadings.map(r => r.standardizedLevel));
                     const maxReading = Math.max(...standardizedReadings.map(r => r.standardizedLevel));
                     
-                    // If there's high variability and very high readings, suggest Type 1
-                    if (stdDeviation > 60 && maxReading > 300) {
+                    // Age is a strong factor - Type 1 more common in younger people
+                    if (userProfile.age < 30) {
+                        type1Indicators += 2;
+                    } else if (userProfile.age >= 40) {
+                        type2Indicators += 2;
+                    }
+                    
+                    // High variability suggests Type 1
+                    if (stdDeviation > 60) {
+                        type1Indicators += 1;
+                    }
+                    
+                    // Very high readings suggest Type 1
+                    if (maxReading > 300) {
+                        type1Indicators += 1;
+                    }
+                    
+                    // BMI - Type 2 more common with high BMI
+                    if (userProfile.bmi >= 30) {
+                        type2Indicators += 2;
+                    } else if (userProfile.bmi <= 25 && userProfile.bmi > 0) {
+                        type1Indicators += 1;
+                    }
+                    
+                    // Family history and other risk factors for Type 2
+                    if (riskFactors.includes('familyHistory')) {
+                        type2Indicators += 1;
+                    }
+                    
+                    if (riskFactors.includes('hypertension') || 
+                        riskFactors.includes('cholesterol') || 
+                        riskFactors.includes('heartDisease')) {
+                        type2Indicators += 1;
+                    }
+                    
+                    if (riskFactors.includes('physicalInactivity') || userProfile.bmi >= 25) {
+                        type2Indicators += 1;
+                    }
+                    
+                    // If there are more Type 1 indicators, suggest Type 1
+                    if (type1Indicators > type2Indicators) {
                         result.message = '<h3>Posibleng Type 1 Diabetes</h3>';
-                        result.message += '<p>Base sa iyong mga glucose readings, ang iyong mga antas ng asukal sa dugo ay mataas at may malaking pagkakaiba-iba, ' +
+                        result.message += '<p>Base sa iyong mga glucose readings at iba pang factors, ang iyong mga antas ng asukal sa dugo ay mataas at may malaking pagkakaiba-iba, ' +
                                          'na maaaring nagpapahiwatig ng Type 1 diabetes.</p>';
                         result.class = 'type1';
-                        result.info = '<p>Ang Type 1 diabetes ay isang autoimmune condition kung saan ang katawan ay hindi gumagawa ng insulin. ' +
+                        result.info = demographicSummary;
+                        result.info += '<p>Ang Type 1 diabetes ay isang autoimmune condition kung saan ang katawan ay hindi gumagawa ng insulin. ' +
                                      'Ito ay karaniwang nagsisimula sa kamusmusan o sa pagkabata, pero maaari ring mangyari sa anumang edad.</p>' +
                                      '<p>Ang mga features na nagmumungkahi ng Type 1 diabetes ay: mabilis na pag-onset ng mga sintomas, ' +
                                      'malaking pagkakaiba-iba sa mga glucose levels, at mataas na mga spike sa glucose.</p>' +
@@ -521,10 +922,10 @@
                     // Otherwise, suggest Type 2
                     else {
                         result.message = '<h3>Posibleng Type 2 Diabetes</h3>';
-                        result.message += '<p>Base sa iyong mga glucose readings, ang iyong mga antas ng asukal sa dugo ay patuloy na mataas, ' +
-                                         'na maaaring nagpapahiwatig ng Type 2 diabetes.</p>';
+                        result.message += '<p>Base sa iyong mga glucose readings at risk factors, ang iyong mga antas ng asukal sa dugo at profile ay nagpapahiwatig ng posibleng Type 2 diabetes.</p>';
                         result.class = 'type2';
-                        result.info = '<p>Ang Type 2 diabetes ay isang chronic condition na nakakaapekto sa paraan ng pag-process ng katawan ng asukal sa dugo. ' +
+                        result.info = demographicSummary;
+                        result.info += '<p>Ang Type 2 diabetes ay isang chronic condition na nakakaapekto sa paraan ng pag-process ng katawan ng asukal sa dugo. ' +
                                      'Sa Type 2 diabetes, ang katawan ay either lumalaban sa epekto ng insulin o hindi gumagawa ng sapat na insulin upang ' +
                                      'mapanatili ang normal na mga antas ng glucose.</p>' +
                                      '<p>Ang Type 2 diabetes ay karaniwang nagde-develop sa paglipas ng panahon at kadalasang nauugnay sa ' +
@@ -534,7 +935,7 @@
                     }
                     
                     result.info += '<p><strong>Mahalagang Paalala:</strong> Ang diabetes ay isang seryosong medikal na kondisyon na nangangailangan ng propesyonal na ' +
-                                  'diagnosis at management. Ang data analysis na ito ay batay lamang sa iyong mga self-reported glucose readings at hindi ' +
+                                  'diagnosis at management. Ang data analysis na ito ay batay lamang sa iyong mga self-reported glucose readings at risk factors at hindi ' +
                                   'kapalit ng isang propesyonal na medikal na diagnosis. Mangyaring kumonsulta sa healthcare provider para sa ' +
                                   'kumpirmadong diagnosis at personalized na treatment plan.</p>';
                 }
@@ -547,6 +948,7 @@
                 }
                 result.info += `<li>Average overall glucose: ${averageOverall.toFixed(1)} mg/dL</li>`;
                 result.info += `<li>Kabuuang bilang ng mga reading: ${readings.length}</li>`;
+                result.info += `<li>Diabetes Risk Score: ${diabetesRiskScore}/10</li>`;
                 result.info += '</ul>';
                 
                 // Add general disclaimer
@@ -556,7 +958,50 @@
                 return result;
             }
             
+            function calculateDiabetesRiskScore(userProfile, riskFactors) {
+                let score = 0;
+                
+                // Age-related risk
+                if (userProfile.age >= 65) {
+                    score += 3;
+                } else if (userProfile.age >= 45) {
+                    score += 2;
+                } else if (userProfile.age >= 25) {
+                    score += 1;
+                }
+                
+                // BMI-related risk
+                if (userProfile.bmi >= 30) {
+                    score += 3;
+                } else if (userProfile.bmi >= 25) {
+                    score += 2;
+                }
+                
+                // Risk factors contribution
+                const majorRiskFactors = ['familyHistory', 'hypertension', 'prediabetesHistory', 'gestational'];
+                const moderateRiskFactors = ['physicalInactivity', 'ethnicRisk', 'pcos', 'cholesterol', 'heartDisease', 'sleep'];
+                
+                // Count major risk factors (more weight)
+                majorRiskFactors.forEach(factor => {
+                    if (riskFactors.includes(factor)) {
+                        score += 2;
+                    }
+                });
+                
+                // Count moderate risk factors
+                moderateRiskFactors.forEach(factor => {
+                    if (riskFactors.includes(factor)) {
+                        score += 1;
+                    }
+                });
+                
+                // Cap the score at 10
+                return Math.min(score, 10);
+            }
+            
             function calculateStandardDeviation(values) {
+                if (values.length === 0) return 0;
+                
                 const avg = values.reduce((sum, val) => sum + val, 0) / values.length;
                 const squareDiffs = values.map(value => {
                     const diff = value - avg;
