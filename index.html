@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comprehensive Diabetes Detection AI</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> 
+    
 </head>
 <body>
     <div class="container">
@@ -21,99 +22,98 @@
         </div>
         
         <div class="greeting" id="greeting">
-            <p>Good Day! Welcome to Diabetes Prediction AI.</p>
-            <p>This tool was created by students of Silver-Stem of Gen. Juan Castaneda Senior High School. 
-                Our AI helps to detect Diabetic person base on their given BMI, Background and Glucose level for at least 7 days.</p>
-            <button id="startBtn">Start Test</button>
+            <p>Magandang araw! Maligayang pagdating sa aming Comprehensive Diabetes Detection AI.</p>
+            <p>Ang tool na ito ay makakatulong upang masuri ang posibilidad ng diabetes base sa iyong blood glucose readings at iba pang risk factors.</p>
+            <button id="startBtn">Simulan</button>
         </div>
         
         <div class="demographic-section hidden" id="demographicSection">
-            <h2>Personal Information</h2>
-            <p>Please Input your correct information</p>
+            <h2>Personal na Impormasyon</h2>
+            <p>Pakiusap ilagay ang iyong personal na impormasyon para sa mas tumpak na pagsusuri.</p>
             
             <div class="demographic-info">
                 <div class="form-group">
-                    <label for="ageInput">Age:</label>
-                    <input type="number" id="ageInput" min="1" max="120" placeholder="Ex: 45">
+                    <label for="ageInput">Edad:</label>
+                    <input type="number" id="ageInput" min="1" max="120" placeholder="Hal: 45">
                 </div>
                 
                 <div class="form-group">
-                    <label for="genderInput">Sex:</label>
+                    <label for="genderInput">Kasarian:</label>
                     <select id="genderInput">
-                        <option value="">-- Options --</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">-</option>
+                        <option value="">-- Pumili --</option>
+                        <option value="male">Lalaki</option>
+                        <option value="female">Babae</option>
+                        <option value="other">Iba pa</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="heightInput">Height (cm):</label>
-                    <input type="number" id="heightInput" min="30" max="250" placeholder="Ex: 165">
+                    <label for="heightInput">Taas (cm):</label>
+                    <input type="number" id="heightInput" min="50" max="250" placeholder="Hal: 165">
                 </div>
                 
                 <div class="form-group">
-                    <label for="weightInput">Weight (kg):</label>
-                    <input type="number" id="weightInput" min="20" max="300" placeholder="Ex: 70">
+                    <label for="weightInput">Timbang (kg):</label>
+                    <input type="number" id="weightInput" min="20" max="300" placeholder="Hal: 70">
                 </div>
             </div>
             
             <div class="risk-factors">
                 <div class="risk-factors-title">
                     <h3>Risk Factors</h3>
-                    <button id="selectAllBtn" class="secondary">Select All</button>
+                    <button id="selectAllBtn" class="secondary">Piliin Lahat</button>
                 </div>
-                <p>Add a check that applies to you</p>
+                <p>Lagyan ng check ang anumang naaangkop sa iyo:</p>
                 
                 <div class="risk-factors-grid">
                     <div class="checkbox-item">
                         <input type="checkbox" id="familyHistory" name="riskFactor" value="familyHistory">
-                        <label for="familyHistory">Has a Relative with Diabetes</label>
+                        <label for="familyHistory">May kamag-anak na may diabetes</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="hypertension" name="riskFactor" value="hypertension">
-                        <label for="hypertension">With High Blood Pressure</label>
+                        <label for="hypertension">May high blood pressure</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="physicalInactivity" name="riskFactor" value="physicalInactivity">
-                        <label for="physicalInactivity">Does Not Exercise Regularly</label>
+                        <label for="physicalInactivity">Hindi regular na nag-eexercise</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="gestational" name="riskFactor" value="gestational">
-                        <label for="gestational">Had a Gestational Diabetes</label>
+                        <label for="gestational">Nagkaroon ng gestational diabetes</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="pcos" name="riskFactor" value="pcos">
-                        <label for="pcos">Has PCOS (Polycystic Ovary Syndrome)</label>
+                        <label for="pcos">May PCOS (Polycystic Ovary Syndrome)</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="cholesterol" name="riskFactor" value="cholesterol">
-                        <label for="cholesterol">Has a High Cholesterol</label>
+                        <label for="cholesterol">May mataas na cholesterol</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="heartDisease" name="riskFactor" value="heartDisease">
-                        <label for="heartDisease">Has heart disease</label>
+                        <label for="heartDisease">May heart disease</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="prediabetesHistory" name="riskFactor" value="prediabetesHistory">
-                        <label for="prediabetesHistory">Diagnosed with Prediabetes before</label>
+                        <label for="prediabetesHistory">Dating na-diagnose na prediabetes</label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="ethnicRisk" name="riskFactor" value="ethnicRisk">
-                        <label for="ethnicRisk">Belongs to a high-risk ethnic group <span class="tooltip">ⓘ<span class="tooltiptext">Asian, Pacific Islander, African, Hispanic/Latino, at Indigenous/native</span></span></label>
+                        <label for="ethnicRisk">Kabilang sa high-risk ethnic group <span class="tooltip">ⓘ<span class="tooltiptext">Asian, Pacific Islander, African, Hispanic/Latino, at Indigenous/native</span></span></label>
                     </div>
                     
                     <div class="checkbox-item">
                         <input type="checkbox" id="sleep" name="riskFactor" value="sleep">
-                        <label for="sleep">Has sleep problems (apnea)</label>
+                        <label for="sleep">May sleep problems (apnea)</label>
                     </div>
                 </div>
                 
@@ -123,31 +123,31 @@
             </div>
             
             <div style="text-align: center; margin-top: 20px;">
-                <button id="demographicNextBtn">Next</button>
+                <button id="demographicNextBtn">Susunod</button>
             </div>
         </div>
         
         <div class="unit-selector hidden" id="unitSection">
-            <h2>Select Unit of Measurement</h2>
-            <p>What unit does your glucometer use?</p>
+            <h2>Piliin ang Unit ng Measurement</h2>
+            <p>Anong unit ang ginagamit ng iyong glucometer?</p>
             <button id="mgdlBtn">mg/dL</button>
             <button id="mmolBtn">mmol/L</button>
         </div>
         
         <div class="input-section hidden" id="inputSection">
-            <h2>Records of Glucose Readings</h2>
-            <p>Please input your blood glucose readings for the past week</p>
-            <p>"You may enter any number of reading"</p>
+            <h2>I-record ang Iyong Glucose Readings</h2>
+            <p>Pakilagay ang iyong mga blood glucose readings sa nakalipas na linggo.</p>
+            <p>Maaaring maglagay ng kahit ilang readings, pero mas accurate ang resulta kung mayroon kang at least 7 readings.</p>
             
             <div class="reading-list" id="readingList">
                 <table id="readingsTable">
                     <thead>
                         <tr>
-                            <th>Day</th>
-                            <th>Time</th>
+                            <th>Araw</th>
+                            <th>Oras</th>
                             <th>Reading (<span id="unitLabel">mg/dL</span>)</th>
-                            <th>Status</th>
-                            <th>Action</th>
+                            <th>Kalagayan</th>
+                            <th>Aksyon</th>
                         </tr>
                     </thead>
                     <tbody id="readingsTableBody">
@@ -157,42 +157,42 @@
             
             <div class="reading-row">
                 <select id="dayInput">
-                    <option value="Lunes">Monday</option>
-                    <option value="Martes">Tuesday</option>
-                    <option value="Miyerkules">Wednesday</option>
-                    <option value="Huwebes">Thursday</option>
-                    <option value="Biyernes">Friday</option>
-                    <option value="Sabado">Saturday</option>
-                    <option value="Linggo">Sunday</option>
+                    <option value="Lunes">Lunes</option>
+                    <option value="Martes">Martes</option>
+                    <option value="Miyerkules">Miyerkules</option>
+                    <option value="Huwebes">Huwebes</option>
+                    <option value="Biyernes">Biyernes</option>
+                    <option value="Sabado">Sabado</option>
+                    <option value="Linggo">Linggo</option>
                 </select>
                 <select id="timeInput">
-                    <option value="Fasting">Fasting (Upon Waking up)</option>
-                    <option value="Before Breakfast">Before Breakfast</option>
-                    <option value="After Breakfast">After Breakfast</option>
-                    <option value="Before Lunch">Before Lunch</option>
-                    <option value="After Lunch">After Lunch</option>
-                    <option value="Before Dinner">Before Dinner</option>
-                    <option value="After Dinner">After Dinner</option>
-                    <option value="Before Bedtime">Before going to bed</option>
+                    <option value="Fasting">Fasting (pagkagising)</option>
+                    <option value="Before Breakfast">Bago mag-almusal</option>
+                    <option value="After Breakfast">Pagkatapos mag-almusal</option>
+                    <option value="Before Lunch">Bago mag-tanghalian</option>
+                    <option value="After Lunch">Pagkatapos mag-tanghalian</option>
+                    <option value="Before Dinner">Bago mag-hapunan</option>
+                    <option value="After Dinner">Pagkatapos mag-hapunan</option>
+                    <option value="Before Bedtime">Bago matulog</option>
                     <option value="Random">Random</option>
                 </select>
                 <input type="number" id="glucoseInput" min="0" max="1000" placeholder="Glucose Level">
-                <button class="add-btn" id="addReadingBtn">+ Add</button>
+                <button class="add-btn" id="addReadingBtn">+ Idagdag</button>
             </div>
             
             <div style="text-align: center; margin-top: 20px;">
-                <button id="analyzeBtn" disabled>Test the Data</button>
+                <button id="analyzeBtn" disabled>Suriin ang Data</button>
             </div>
         </div>
         
         <div class="result hidden" id="resultSection">
-            <h2>Result of the Test</h2>
+            <h2>Resulta ng Pagsusuri</h2>
             <div id="resultText"></div>
             <div class="info-section" id="infoSection"></div>
             <div id="riskFactorSummary"></div>
             <div id="chartContainer" style="height: 300px; width: 100%; margin-top: 20px;"></div>
             <div style="text-align: center; margin-top: 20px;">
-                <button id="resetBtn">Home</button>
+                <button id="resetBtn">Subukan Muli</button>
             </div>
         </div>
     </div>
@@ -355,7 +355,7 @@
                 const time = timeInput.value;
                 
                 if (isNaN(glucoseLevel) || glucoseLevel <= 0) {
-                    alert('Please Input Correct GLucose Level');
+                    alert('Pakiusap maglagay ng tamang numero para sa glucose level.');
                     return;
                 }
                 
@@ -388,20 +388,20 @@
                 
                 // Display risk factor summary
                 if (riskFactors.length > 0) {
-                    let riskFactorHTML = '<h3>Your Risk Factors:</h3><ul>';
+                    let riskFactorHTML = '<h3>Iyong Risk Factors:</h3><ul>';
                     
                     // Map risk factor values to readable text
                     const riskFactorLabels = {
-                        familyHistory: '"Has a relative with diabetes."',
-                        hypertension: 'Have a High Blood Pressure',
-                        physicalInactivity: 'Irregular Exercise',
-                        gestational: 'Had a Gestational Diabetes',
-                        pcos: 'Has PCOS (Polycystic Ovary Syndrome)',
-                        cholesterol: 'Has a High cholesterol',
-                        heartDisease: 'Has heart disease',
-                        prediabetesHistory: 'Diagnosed with Prediabetes',
-                        ethnicRisk: 'Belongs to High-risk ethnic group',
-                        sleep: 'Has sleep problem (apnea)',
+                        familyHistory: 'May kamag-anak na may diabetes',
+                        hypertension: 'May high blood pressure',
+                        physicalInactivity: 'Hindi regular na nag-eexercise',
+                        gestational: 'Nagkaroon ng gestational diabetes',
+                        pcos: 'May PCOS (Polycystic Ovary Syndrome)',
+                        cholesterol: 'May mataas na cholesterol',
+                        heartDisease: 'May heart disease',
+                        prediabetesHistory: 'Dating na-diagnose na prediabetes',
+                        ethnicRisk: 'Kabilang sa high-risk ethnic group',
+                        sleep: 'May sleep problems (apnea)',
                         obesity: 'BMI >= 25 (overwight o obese)'
                     };
                     
